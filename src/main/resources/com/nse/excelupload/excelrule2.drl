@@ -1,0 +1,32 @@
+package com.nse.excelupload;
+
+import com.nse.excelupload.model.Cell;
+rule "validate for negative values" 
+
+
+	when
+		$cell : Cell(value < 0.0)
+       
+    then
+        	   
+        //Logging message
+    	$cell.setValid("false");
+    	$cell.setValidationMsg("Value should be positive");
+    
+end
+
+rule "validate for decimal places" 
+
+
+	when
+	   $cell : Cell(value > 0.0)
+	   
+    then
+       String[] splitter = String.valueOf($cell.getValue()).split("\\.");
+       int len= splitter[1].length();
+	  //Logging message
+	  if(len > 6)
+    	$cell.setValid("false");
+    	$cell.setValidationMsg("upto 6 digit decimal allowed");
+    
+end
